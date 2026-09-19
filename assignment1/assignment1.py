@@ -11,7 +11,7 @@ class Vec:
             for x in elements: 
                 if not isinstance (x, (int, float)):
                     raise TypeError(f"Scalar must be a number: {type(x)}")
-                self.elements = elements
+            self.elements = elements
 
     #Display the vector
     def __repr__(self) -> str:
