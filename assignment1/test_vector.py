@@ -36,6 +36,18 @@ class TestMean(unittest.TestCase):
         with self.assertRaises(ValueError):
             v.mean()
 
+class TestDemean(unittest.TestCase):
+    #testing the actual demeaned vector
+    def test_demean(self):
+        v = Vec([1,5,6])
+        result = v.demean()
+        self.assertEqual(result.elements, [-3,1,2])
+
+    #mean of a demeaned vector should be 0
+    def test_demean_mean(self):
+        v = Vec([1,5,6])
+        result = v.demean()
+        self.assertEqual(result.mean(), 0)
 
 if __name__ == "__main__":
     unittest.main()
