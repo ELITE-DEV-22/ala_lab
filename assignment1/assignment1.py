@@ -40,7 +40,7 @@ class Vec:
         squared_deviations = [x * x for x in demeaned.elements]
 
         return math.sqrt(sum(squared_deviations) / len(self.elements))
-
+    
 v1 = Vec([1, 5, 6])
 
 print(v1)

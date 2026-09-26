@@ -49,5 +49,19 @@ class TestDemean(unittest.TestCase):
         result = v.demean()
         self.assertEqual(result.mean(), 0)
 
+class TestStd(unittest.TestCase):
+        def test_std(self):
+            v = Vec([1,5,6])
+            expected = (14/3) ** 0.5
+            self.assertAlmostEqual(v.std(), expected)
+
+        def test_constant_vec(self):
+                v = Vec([9,9,9,9])
+                self.assertEqual(v.std(), 0)
+    
+        #devation cannot be negative
+        def test_std(self):
+                v = Vec([-2,5,6])
+                self.assertGreaterEqual(v.std(), 0)
 if __name__ == "__main__":
     unittest.main()
