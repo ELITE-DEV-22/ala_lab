@@ -71,10 +71,21 @@ class TestQuestion1(unittest.TestCase):
         self.assertTrue(np.allclose(d, expected))
         self.assertTrue(np.allclose(d, d_matrix))
 
+# QUESTION 2
+class question2:
+    def __init__(self, D):
+        self.D = D
+    def compute(self):
+        X = np.random.default_rng(0).standard_normal((6, 768))#generate six token embeddings each containing 768 values
+        result  = self.D.T @ X
+        return X, result
+q2 = question2(D)
+X, result_X = q2.compute()
+print("\n Shape of X:", X.shape)
+print("\n Shape of D^T X:", result_X.shape)
 
-
+assert X.shape == (6, 768)#assert X has the correct shape
+assert result.shape == (5, 768)#assert result has correct shape
 
 if __name__ == "__main__":
     unittest.main()
-
-
