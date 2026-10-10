@@ -41,12 +41,12 @@ print("\n Verification:", np.allclose(d, d_matrix))#checks if both results match
 class TestQuestion1(unittest.TestCase):
 
     def setUp(self):
-        # Initialize the vector and construct D before each test
+        #initialize the vector and construct D before each test
         self.x = np.array([1, 4, 9, 16, 25, 36], dtype=np.float64)
         self.D = implement_D(len(self.x))
 
     def test_implement_D(self):
-        # Test whether D has the correct shape and column pattern
+        #test if D has the correct shape and column pattern
         self.assertEqual(self.D.shape, (6, 5))
 
         for j in range(self.D.shape[1]):
@@ -56,13 +56,13 @@ class TestQuestion1(unittest.TestCase):
             self.assertTrue(np.allclose(self.D[:, j], expected_column))
 
     def test_slice_vec(self):
-        # Test whether slice_vec returns the correct subvector x_2:5
+        #test if slice_vec returns the correct subvector x_2:5
         expected = np.array([4, 9, 16, 25], dtype=np.float64)
         actual = slice_vec(self.x, 2, 5)
         self.assertTrue(np.allclose(actual, expected))
 
     def test_difference(self):
-        # Test whether the subvector difference matches D^T x
+        #test if the subvector difference matches D^T x
         d = slice_vec(self.x, 2, 6) - slice_vec(self.x, 1, 5)
         d_matrix = self.D.T @ self.x
 
@@ -77,7 +77,7 @@ class question2:
         self.D = D
     def compute(self):
         X = np.random.default_rng(0).standard_normal((6, 768))#generate six token embeddings each containing 768 values
-        result  = self.D.T @ X
+        result  = self.D.T @ X #create an obejct and compute D.T @ X
         return X, result
 q2 = question2(D)
 X, result_X = q2.compute()
