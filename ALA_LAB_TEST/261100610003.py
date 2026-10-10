@@ -11,7 +11,7 @@ def implement_D(n):
         D[j + 1, j] = 1.0
     return D
 
-x = np.array([1,4,9,16,25,36], dtype = float)#create the second array to multiply it with
+x = np.array([1,4,9,16,25,36], dtype = np.float64)#create the second array to multiply it with
 D = implement_D(len(x))
 result = x @ D #matrix multiplication 
 print(D)
@@ -85,7 +85,80 @@ print("\n Shape of X:", X.shape)
 print("\n Shape of D^T X:", result_X.shape)
 
 assert X.shape == (6, 768)#assert X has the correct shape
-assert result.shape == (5, 768)#assert result has correct shape
+assert result_X.shape == (5, 768)#assert result has correct shape
+
+
+#QUESTION 3
+
+class question3:
+    def layer_norm(self, e, gamma, beta, eps):
+        m = np.sum(e)/ len (e)#calculate the scalar mean 
+        v = np.sum((e-m)**2) / len(e)#calcuate the variance
+        normalized = (e-m) / np.sqrt(v+eps)#normalize the input vector
+        output = normalized * gamma + beta
+        return output
+q3 = question3()
+
+#generate input activation vector of size 768
+rng = np.random.default_rng(0)
+e = rng.standard_normal(768).astype(np.float64)
+#initialize the gamma and beta values
+gamma = np.ones(768, dtype=np.float64)
+beta = np.zeros(768, dtype=np.float64)
+#set the value of epilison
+eps = 1e-5
+#apply the layer normalization
+output = q3.layer_norm(e, gamma, beta, eps)
+#display the input and output shape
+print("\nShape of input:", e.shape)
+print("\nShape of output:", output.shape)
+
+# Unit test for Question 3
+# Unit tests for Question 3
+
+class TestQuestion3(unittest.TestCase):
+
+    def setUp(self):
+        rng = np.random.default_rng(0)
+        self.e = rng.standard_normal(768).astype(np.float64)
+        self.gamma = np.ones(768, dtype=np.float64)
+        self.beta = np.zeros(768, dtype=np.float64)
+        self.eps = 1e-5
+        self.q3 = question3()
+
+    def test_reference_formula(self):
+        #compare implementation with the reference formula
+        m = np.mean(self.e)
+        v = np.var(self.e)
+
+        expected = ((self.e - m) / np.sqrt(v + self.eps)
+                    ) * self.gamma + self.beta
+
+        actual = self.q3.layer_norm(
+            self.e, self.gamma, self.beta, self.eps
+        )
+
+        self.assertTrue(
+            np.allclose(actual, expected, rtol=1e-10, atol=1e-12)
+        )
+
+    def test_output_mean_and_variance(self):
+        #verify output mean and variance when gamma = 1 and beta = 0
+        output = self.q3.layer_norm(
+            self.e, self.gamma, self.beta, self.eps
+        )
+
+        v = np.var(self.e)
+        expected_variance = v / (v + self.eps)
+
+        self.assertAlmostEqual(
+            float(np.mean(output)), 0.0, delta=1e-10
+        )
+        self.assertAlmostEqual(
+            float(np.var(output)),
+            float(expected_variance),
+            delta=1e-10
+        )
 
 if __name__ == "__main__":
     unittest.main()
